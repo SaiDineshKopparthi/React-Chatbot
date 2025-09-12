@@ -1,28 +1,21 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-export default function InputBox({ onSend }) {
-  const [input, setInput] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    onSend(input);
-    setInput("");
-  };
-
+const Input = React.forwardRef(({ className, ...props }, ref) => {
   return (
-    <form onSubmit={handleSubmit} className="flex space-x-2">
-      <Input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type your message..."
-        className="flex-1"
-      />
-      <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-        Send
-      </Button>
-    </form>
-  );
-}
+    <input
+      ref={ref}
+      className={cn(
+        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
+        "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  )
+})
+
+Input.displayName = "Input"
+
+export { Input }

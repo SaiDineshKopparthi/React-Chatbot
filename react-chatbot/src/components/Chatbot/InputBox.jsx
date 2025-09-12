@@ -1,26 +1,41 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function InputBox({ onSend }) {
-  const [input, setInput] = useState("");
+  const [text, setText] = useState("");
 
-  const handleSubmit = (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    onSend(input);
-    setInput("");
+    if (!text.trim()) return;
+    onSend(text.trim());
+    setText("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex space-x-2">
+    <form onSubmit={submit} className="flex items-center gap-2">
       <Input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type a message..."
-        className="flex-1"
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Type your message..."
+        className="
+          flex-1 border-none rounded-lg
+          bg-[var(--Gray-700)] text-[var(--White)]
+          placeholder:text-gray-300
+          focus-visible:ring-2 focus-visible:ring-[var(--Green)]
+        "
       />
-      <Button type="submit">Send</Button>
+      <Button
+        type="submit"
+        className="
+          rounded-lg font-semibold
+          bg-[var(--Green)] text-[var(--Gray-900)]
+          hover:brightness-105
+        "
+      >
+        Send
+      </Button>
     </form>
   );
 }

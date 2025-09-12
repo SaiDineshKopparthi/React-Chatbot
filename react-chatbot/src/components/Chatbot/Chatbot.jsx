@@ -1,51 +1,53 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import InputBox from "./InputBox";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 export default function Chatbot() {
-  const [showIntro, setShowIntro] = useState(true);
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! How can I help you?", sender: "bot" }
+    { id: 1, text: "Hello! How can I help you?", sender: "bot" },
   ]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleSend = (text) => {
-    const newMessage = { id: Date.now(), text, sender: "user" };
-    setMessages((prev) => [
-      ...prev,
-      newMessage,
-      { id: Date.now() + 1, text: "Okay!!!", sender: "bot" }
-    ]);
+    const userMsg = { id: Date.now(), text, sender: "user" };
+    const botMsg = {
+      id: Date.now() + 1,
+      text: "Thanks, noted!",
+      sender: "bot",
+    };
+    setMessages((prev) => [...prev, userMsg, botMsg]);
   };
 
-  if (showIntro) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-purple-200">
-        <h1 className="text-3xl font-bold animate-pulse">Loading Chatbot...</h1>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-50 to-gray-200">
-      <Card className="w-full max-w-md h-[600px] flex flex-col shadow-2xl rounded-2xl border border-gray-200">
-        <div className="bg-blue-600 text-white text-lg font-semibold px-4 py-3 rounded-t-2xl">
-          Chatbot
-        </div>
-        <CardContent className="flex flex-col flex-grow overflow-y-auto p-4 space-y-3 bg-white">
-          {messages.map((msg) => (
-            <Message key={msg.id} text={msg.text} sender={msg.sender} />
+    <Card
+      className="
+    min-w-[660px]           /* widened by 200px total */
+    h-[600px]               /* fixed height */
+    rounded-2xl shadow-xl border border-[var(--Gray-700)]
+    bg-card text-card-foreground flex flex-col
+  "
+    >
+      {/* Header stays fixed */}
+      <CardHeader className="p-6 border-b border-[var(--Gray-700)] shrink-0">
+        <h1 className="text-center text-xl font-bold tracking-tight text-[var(--primary)]">
+          Chat Assistant
+        </h1>
+      </CardHeader>
+
+      {/* Body split into scrollable messages + pinned input */}
+      <CardContent className="flex flex-col flex-1 p-0 bg-card">
+        {/* messages area gets the scroll */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {messages.map((m) => (
+            <Message key={m.id} text={m.text} sender={m.sender} />
           ))}
-        </CardContent>
-        <div className="p-3 border-t bg-gray-50 rounded-b-2xl">
+        </div>
+
+        {/* input stays pinned */}
+        <div className="p-4 border-t border-[var(--Gray-700)] bg-card shrink-0">
           <InputBox onSend={handleSend} />
         </div>
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

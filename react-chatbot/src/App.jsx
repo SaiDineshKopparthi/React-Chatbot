@@ -2,7 +2,7 @@ import Chatbot from "./components/Chatbot/Chatbot";
 
 export default function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--Gray-900)]">
       <Chatbot />
     </div>
   );
