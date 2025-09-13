@@ -19,7 +19,9 @@ export default function Chatbot() {
       bottomRef.current.scrollIntoView({ behavior: "auto" });
       didMountRef.current = true;
     } else {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      requestAnimationFrame(() => {
+        bottomRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
     }
   }, [messages, isTyping]);
 
@@ -51,7 +53,7 @@ export default function Chatbot() {
         </h1>
       </CardHeader>
 
-      <CardContent className="flex-1 p-0 bg-card overflow-y-auto">
+      <CardContent className="flex-1 p-0 bg-card overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500">
         <div className="p-4 space-y-3">
           {messages.map((m) => (
             <Message key={m.id} text={m.text} sender={m.sender} />
