@@ -1,0 +1,34 @@
+🔹 1. UX / UI Enhancements
+
+Auto-scroll to latest message
+So when a new message is added, the chat view scrolls to the bottom automatically.
+
+Replace “Send” with an icon (e.g., > or SendHorizontal from lucide-react) for a cleaner modern look.
+
+Message bubble styling
+Differentiate bot vs. user messages with background colors and alignment (left = bot, right = user).
+
+Loading indicator
+When the bot is “typing,” show a spinner or animated dots in the chat window.
+
+🔹 2. Functional Improvements
+
+Keyboard shortcuts
+Pressing Enter sends, Shift+Enter creates a newline.
+
+Message persistence
+Save messages in localStorage so if the user refreshes, history isn’t lost.
+
+Scrollable history
+If messages are long, ensure smooth scroll + auto-stick to the bottom until the user manually scrolls up.
+
+🔹 3. Integration / Next Level
+
+Backend API
+Connect your chat to your Node.js/Cloud Run backend instead of a dummy “Thanks, noted!”.
+
+AI Integration
+Plug into Vertex AI Gemini / LLM pipeline so responses are smart.
+
+Streaming responses
+Messages appear word-by-word instead of all at once (like ChatGPT).

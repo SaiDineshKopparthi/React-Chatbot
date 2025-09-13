@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 export default function InputBox({ onSend }) {
   const [text, setText] = useState("");
@@ -26,15 +27,20 @@ export default function InputBox({ onSend }) {
           focus-visible:ring-2 focus-visible:ring-[var(--Green)]
         "
       />
+
+      {/* Icon-only button */}
       <Button
         type="submit"
+        disabled={!text.trim()}
+        aria-label="Send message"
         className="
-          rounded-lg font-semibold
-          bg-[var(--Green)] text-[var(--Gray-900)]
-          hover:brightness-105
+          rounded-lg
+          bg-[var(--Green)] text-black
+          hover:brightness-110 transition
+          w-12 h-10 flex items-center justify-center
         "
       >
-        Send
+        <ArrowUpRight size={18} />
       </Button>
     </form>
   );
