@@ -25,17 +25,32 @@ export default function Chatbot() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = (text) => {
+  const handleSend = async (text) => {
     const userMsg = { id: Date.now(), text, sender: "user" };
     setMessages((prev) => [...prev, userMsg]);
 
     setIsTyping(true);
 
-    setTimeout(() => {
-      const botMsg = { id: Date.now() + 1, text: "Thanks, noted!", sender: "bot" };
+    try {
+      const res = await fetch("http://localhost:3002/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: text }),
+      });
+      const data = await res.json();
+      console.log(data);
+
+      const botMsg = { id: Date.now() + 1, text: data.response?.trim() || "No response", sender: "bot" };
+      
+
       setMessages((prev) => [...prev, botMsg]);
+    } catch (err) {
+      const errorMsg = { id: Date.now() + 1, text: "Error contacting server.", sender: "bot" };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
       setIsTyping(false);
-    }, 900);
+    }
+
   };
 
   return (

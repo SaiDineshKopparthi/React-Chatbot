@@ -1,18 +1,17 @@
-export default function Message({ text, sender }) {
-  const isUser = sender === "user";
+import ReactMarkdown from "react-markdown";
 
+export default function Message({ text, sender }) {
   return (
     <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+      className={`
+        max-w-[75%] px-4 py-2 rounded-lg shadow 
+        ${sender === "user"
+          ? "ml-auto bg-[var(--Green)] text-black"
+          : "mr-auto bg-[var(--Gray-700)] text-white"}
+      `}
     >
-      <div
-        className={`px-4 py-2 rounded-xl text-sm font-medium max-w-[75%] break-words ${
-          isUser
-            ? "bg-[var(--Green)] text-[var(--Gray-900)] self-end rounded-br-none"
-            : "bg-[var(--Gray-700)] text-[var(--White)] self-start rounded-bl-none"
-        }`}
-      >
-        {text}
+      <div className="prose prose-invert">
+        <ReactMarkdown>{text}</ReactMarkdown>
       </div>
     </div>
   );
