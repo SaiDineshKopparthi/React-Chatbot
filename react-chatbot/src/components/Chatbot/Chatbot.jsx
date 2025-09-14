@@ -4,11 +4,49 @@ import InputBox from "./InputBox";
 import TypingDots from "./TypingDots";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
+
+function StartupScreen({ fadingOut }) {
+  return (
+    <div
+      className={`flex flex-col items-center justify-center h-[600px] min-w-[660px] rounded-2xl bg-[var(--Gray-800)] text-[var(--White)] shadow-xl border border-[var(--Gray-700)] ${fadingOut ? "animate-fadeOut" : "animate-fadeIn"
+        }`}
+    >
+      <h1 className="text-2xl font-bold text-[var(--Green)] mb-4">Welcome</h1>
+      <div className="flex gap-2">
+        <span className="w-3 h-3 bg-[var(--Green)] rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+        <span className="w-3 h-3 bg-[var(--Green)] rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+        <span className="w-3 h-3 bg-[var(--Green)] rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+      </div>
+    </div>
+  );
+}
+
+
+
 export default function Chatbot() {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! How can I help you?", sender: "bot" },
-  ]);
+  const defaultMessage = { id: 1, text: "Hello! How can I help you?", sender: "bot" };
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem("chatMessages");
+    return saved ? JSON.parse(saved) : [defaultMessage];
+  });
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  }, [messages]);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsFadingOut(true), 1200);
+    const finalTimer = setTimeout(() => setIsLoading(false), 2000);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(finalTimer);
+    };
+  }, []);
 
   const bottomRef = useRef(null);
   const didMountRef = useRef(false);
@@ -41,7 +79,7 @@ export default function Chatbot() {
       console.log(data);
 
       const botMsg = { id: Date.now() + 1, text: data.response?.trim() || "No response", sender: "bot" };
-      
+
 
       setMessages((prev) => [...prev, botMsg]);
     } catch (err) {
@@ -52,6 +90,15 @@ export default function Chatbot() {
     }
 
   };
+
+  const handleClear = () => {
+    setMessages([defaultMessage]);
+    localStorage.setItem("chatMessages", JSON.stringify([defaultMessage]));
+  };
+
+  if (isLoading) {
+    return <StartupScreen fadingOut={isFadingOut} />;
+  }
 
   return (
     <Card
@@ -85,7 +132,11 @@ export default function Chatbot() {
       </CardContent>
 
       <div className="p-4 border-t border-[var(--Gray-700)] bg-card shrink-0">
-        <InputBox onSend={handleSend} />
+        <InputBox
+          onSend={handleSend}
+          onClear={handleClear}
+          canClear={messages.length > 1}
+        />
       </div>
     </Card>
   );

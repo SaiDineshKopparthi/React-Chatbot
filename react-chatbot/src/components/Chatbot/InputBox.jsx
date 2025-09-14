@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 
-export default function InputBox({ onSend }) {
+export default function InputBox({ onSend, onClear, canClear }) {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
 
@@ -65,6 +65,24 @@ export default function InputBox({ onSend }) {
       >
         <ArrowUpRight size={18} />
       </Button>
+
+
+      <Button
+        type="button"
+        onClick={onClear}
+        disabled={!canClear}
+        aria-label="Clear chat"
+        className={`
+    rounded-lg
+    bg-[var(--Green)] text-black
+    hover:brightness-110 transition
+    px-4 h-10 flex items-center justify-center
+    ${!canClear ? "opacity-50 cursor-not-allowed" : ""}
+  `}
+      >
+        Clear
+      </Button>
+
     </form>
   );
 }

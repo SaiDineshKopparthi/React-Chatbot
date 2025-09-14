@@ -31,10 +31,10 @@ export async function getVertexModel() {
   });
 
   model = vertexAI.getGenerativeModel({
-    model: "gemini-2.5-pro",
+    model: "gemini-2.5-flash",
     generationConfig: {
-      maxOutputTokens: 1500,
-      temperature: 0.7
+      maxOutputTokens: 1200,
+      temperature: 0.3
     },
     systemInstruction: {
       role: "system",
