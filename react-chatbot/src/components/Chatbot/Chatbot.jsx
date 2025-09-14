@@ -8,7 +8,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 function StartupScreen({ fadingOut }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center h-[600px] min-w-[660px] rounded-2xl bg-[var(--Gray-800)] text-[var(--White)] shadow-xl border border-[var(--Gray-700)] ${fadingOut ? "animate-fadeOut" : "animate-fadeIn"
+      className={`flex flex-col items-center justify-center text-[var(--White)] shadow-xl ${fadingOut ? "animate-fadeOut" : "animate-fadeIn"
         }`}
     >
       <h1 className="text-2xl font-bold text-[var(--Green)] mb-4">Welcome</h1>
@@ -70,7 +70,7 @@ export default function Chatbot() {
     setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:3002/chat", {
+      const res = await fetch("https://chatbot-backend-826723631076.us-central1.run.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: text }),
@@ -103,7 +103,9 @@ export default function Chatbot() {
   return (
     <Card
       className="
-        min-w-[660px]
+        w-[660px] 
+        max-[720px]:w-full 
+        max-[720px]:mx-4
         h-[600px]
         rounded-2xl shadow-xl border border-[var(--Gray-700)]
         bg-card text-card-foreground flex flex-col
